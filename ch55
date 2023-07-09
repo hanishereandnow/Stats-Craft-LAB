@@ -1,0 +1,905 @@
+# 5. 다중변수의 확률분포 및 조건부 확률분포
+
+이번 장에서는 단일변수에 대한 분포가 아닌 다중변수에 대한 분포를 다룹니다.
+가장 먼저, 두 확률변수 $X$, $Y$에 대하여
+
+$$P(X=x, Y=y)$$
+
+라든지
+
+$$P(X\le x, Y\le y)$$
+
+를 어떻게 정의할지 하는 문제를 다룹니다.
+이 두 함수는 각각 두 개의 확률변수에 대한 확률질량함수(bivariate probability mass function), 누적분포함수(bivariate cumulative distribution function)이 됩니다.
+또한 두 개의 확률변수에 대한 확률밀도함수(bivariate probability density function)도 생각할 수 있으므로, 이 세 개의 함수들(bivariate PMF, CDF, PDF)은 **두 개의 확률변수에 대한 연합확률분포(bivariate probability distribution)**를 이룹니다.
+한편, 한 확률변수 $X$에 대한 사건을 조건부로 삼아 다른 확률변수 $Y$에 대한 확률을 계산할 수 있습니다.
+이것은 **조건부 확률분포(coditional probability)**라는 이름을 가지게 되며, 앞서 언급한 조건부 확률 $P(A|B)$과는 조금 다릅니다.
+마지막으로, 세 개 이상의 확률변수에 대해서도 마찬가지의 논의를 할 수 있고 이것은 **다중 확률변수에 대한 확률분포(multivariate probability distribution)**가 됩니다.
+
+## 5.1. 두 개의 확률변수에 대한 연합확률분포 (bivariate joint probability density function)
+
+### 5.1.1. 연합확률분포 개요
+
+예를 들어. 동전과 주사위를 각각 하나씩 던져서 나오는 결과를 본다고 하면,
+
+$$
+\begin{align*}
+X(H)&=1\\
+X(T)&=0
+\end{align*}
+$$
+
+로 정의되는 확률변수 $X:\\{H,T\\}\to\mathbb R$와
+
+$$
+\begin{align*}
+Y(1)&=1\\
+Y(2)&=2\\
+Y(3)&=3\\
+Y(4)&=4\\
+Y(5)&=5\\
+Y(6)&=6
+\end{align*}
+$$
+
+로 정의되는 확률변수 $Y:\\{1,2,3,4,5,6\\}\to\mathbb R$를 생각하게 됩니다.
+이때, $X$, $Y$의 joint PMF는
+
+$$
+P(X=x,Y=y)=P\left(\{(w_1,w_2)\in S_1\times S_2:X(w_1)=x,Y(w_2)=y\}\right)
+$$
+
+로 정의할 수 있습니다.
+(단, $S_1=\\{H,T\\}$, $S_2=\\{1,2,3,4,5,6\\}$)
+예를 들어,
+
+$$
+\begin{align*}
+P(X=0,Y=2)
+&=P\left(\{(w_1,w_2)\in S_1\times S_2:X(w_1)=0,Y(w_2)=2\}\right)\\
+&=P\left(\{(T,2)\}\right)\\
+&=\frac{n(\{(T,2)\})}{n(S_1\times S_2)}\\
+&=\frac1{12}
+\end{align*}
+$$
+
+입니다.
+
+방금 계산한 것은 joint distribution에서의 PMF에 해당하는 것입니다.
+그런데 $X$와 $Y$ 중 하나라도 연속확률변수이면 PMF를 정의하는 건 어려운 문제가 됩니다.
+반면, CDF는 연속확률변수나 이산확률변수 모두에 대해 잘 정의됩니다.
+그러니, joint PMF와 joint PDF를 정의하기 전에 joint CDF의 정의를 먼저 보겠습니다.
+joint CDF는
+
+$$F_{XY}(x,y)=P(X\le x, Y\le y)$$
+
+와 같이 정의됩니다. 그리고 다음 성질들을 만족시킵니다.
+
+$$
+\begin{align*}
+(1)~
+&0\le F_{XY}(x,y)\le 1\\
+(2)~
+&F_{XY}(x_1,y_1)\le F_{XY}(x_1,y_2)\qquad(x_1\lt x_2,\:\:y_1\lt y_2)\\
+&F_{XY}(x_1,y_1)\le F_{XY}(x_2,y_1)\\
+(3)~
+&\lim_{\substack{x\to\infty \\y\to\infty}}F_{XY}(x,y)=1\\
+(4)~
+&\lim_{x\to-\infty}F_{XY}(x,y)=0\\
+&\lim_{y\to-\infty}F_{XY}(x,y)=0\\
+(5)~
+&P(x_1\lt X\le x_2,Y\le y)=F_{XY}(x_2,y)-F_{XY}(x_1,y)\\
+(6)~
+&P(x_1\lt X\le x_2,y_1\lt Y\le y_2)
+=F_{XY}(x_2,y_2)-F_{XY}(x_1,y_2)-F_{XY}(x_2,y_1)+F_{XY}(x_1,y_1)\\
+\end{align*}
+$$
+
+#### 예시
+
+$$
+\begin{align*}
+P(X\gt x,Y\gt y)
+&=1-P(X\le x\text{ or }Y\le y)\\
+&=1-\left(P(X\le x)+P(Y\le y)-P(X\le x, Y\le y)\right)\\
+&=1-P(X\le x)-P(Y\le y)+P(X\le x, Y\le y)\\
+&=1-F_X(x)-F_Y(y)+F_{XY}(x,y)\\
+\end{align*}
+$$
+
+위 계산에서 한 변수에 대해서의 CDF인 $F_X(x)$가 등장했습니다.
+이와 같이, 두 변수에 대한 확률분포에서 특별히 한 변수에 대한 분포를 생각할때, 그 분포를 marginal distribution이라고 합니다.
+이때, marginal CDF와 joint CDF 사이에는 다음과 같은 관계가 성립합니다.
+
+$$
+\begin{align*}
+F_X(a)&=\lim_{y\to\infty}F_{XY}(a,y)\\
+F_Y(b)&=\lim_{x\to\infty}F_{XY}(x,b)
+\end{align*}
+$$
+
+### 5.1.2. 이산확률변수의 연합확률분포(discrete joint distributions)
+
+이산확률변수 $X$, $Y$에 대하여 $X$와 $Y$의 joint distribution에 대한 PMF는
+
+$$P_{XY}(x,y)=P(X=x,Y=y)$$
+
+로 정의됩니다.
+joint PMF는 다음 성질들을 만족시킵니다.
+
+$$
+\begin{align*}
+(1)~
+&0\le P_{XY}(x,y)\le1\\
+(2)~
+&\sum_x\sum_y P_{XY}(x,y)=1\\
+(3)~
+&F_{XY}(x,y)=P(X\le x,Y\le y)=\sum_{\tilde x\le x}\sum_{\tilde y\le y}P_{XY}(\tilde x,\tilde y)\\
+(4)~
+&P_X(x)=\sum_y P_{XY}(x,y)\qquad(\text{marginalization})\\
+&P_Y(y)=\sum_x P_{XY}(x,y)\\
+(5)~
+&P_{XY}(x,y)=P_X(x)P_Y(y)\qquad(X,Y:\text{independent})
+\end{align*}
+$$
+
+위의 성질 (1)-(4)는 모두 당연해 보이므로 따로 증명하지 않겠습니다.
+그리고 (5)는 두 확률변수가 독립인 것의 정의입니다.
+
+![]({{site.url}}\images\2023-03-26-kocw_stats\stats_10-6.png){: .img-50-center}
+
+![]({{site.url}}\images\2023-03-26-kocw_stats\stats_10-7.png){: .img-50-center}
+
+![]({{site.url}}\images\2023-03-26-kocw_stats\stats_10-8.png){: .img-50-center}
+
+<!-- 다만, (5)는 아직 이해할 수도 없고 증명할 수도 없습니다.
+아직까지는 두 사건의 독립이라는 개념만 소개했지, 두 확률변수의 독립에 대해서는 정의한 바가 없기 때문입니다.
+두 확률변수의 독립에 관해서는 12강에서 잠깐 소개하게 되는데(43분 경), 사실 이산확률변수와 연속확률변수에 대한 (5)번 항목은 두 확률변수가 독립인 것의 정의로 둘 수 있습니다. -->
+
+### 5.1.3. 연속확률변수의 연합확률분포(continuous joint distributions)
+
+연속확률변수 $X$의 PDF는 CDF의 도함수로서 정의했었습니다.
+$X$의 conditional PDF도 conditional CDF의 도함수로서 정의했습니다.
+마찬가지로, 두 연속확률변수 $X$, $Y$에 대하여 $X$와 $Y$의 joint PDF를 정의하기 위해서는 일단 joint CDF를 먼저 정의해야 합니다.
+joint CDF는
+
+$$F_{XY}(x,y)=P(X\le x,Y\le y)$$
+
+와 같이 정의됩니다.
+연속확률변수 $X$에 대하여 $P(X=x)$의 값을 정하는 것의 의미가 없었습니다.
+변수가 두 개일 때에도 $P(X=x,Y=y)$는 0으로 정할 수밖에 없고, 그건 큰 의미가 있지 않습니다.
+그래서 joint PDF $f_{XY}(x,y)$를
+
+$$
+\begin{align*}
+f_{XY}(x,y)
+&=\lim_{\substack{\Delta x\to0+\\\Delta y\to0+}}\frac{P\left(x<X\le x+\Delta x,y<X\le y+\Delta y\right)}{\Delta x\Delta y}\\
+&=\lim_{\substack{\Delta x\to0+\\\Delta y\to0+}}
+\frac{F_{XY}(x+\Delta x,y+\Delta y)-F_{XY}(x+\Delta x,y)-F_{XY}(x,y+\Delta y)+F_{XY}(x,y)}{\Delta x\Delta y}\\
+&=\lim_{\Delta x\to0+}\frac1{\Delta x}\lim_{\Delta y\to0+}
+\frac{F_{XY}(x+\Delta x,y+\Delta y)-F_{XY}(x+\Delta x,y)-F_{XY}(x,y+\Delta y)+F_{XY}(x,y)}{\Delta y}\\
+&=\lim_{\Delta x\to0+}\frac1{\Delta x}\left(
+\lim_{\Delta y\to0+}\frac{F_{XY}(x+\Delta x,y+\Delta y)-F_{XY}(x+\Delta x,y)}{\Delta y}-
+\lim_{\Delta y\to0+}\frac{F_{XY}(x,y+\Delta y)-F_{XY}(x,y)}{\Delta y}
+\right)\\
+&=\lim_{\Delta x\to0+}\frac1{\Delta x}\left(
+\frac{F_{XY}}{\partial y}(x+\Delta x,y)
+-\frac{F_{XY}}{\partial y}(x,y)\right)\\
+&=\frac{\partial}{\partial x}\frac{\partial}{\partial y}F_{XY}(x,y)\\
+&=\frac{\partial^2}{\partial x\partial y}F_{XY}(x,y)
+\end{align*}
+$$
+
+로 정의합니다.
+이 함수는 $F_{XY}$가 충분히 좋은 함수이면 (e.g. 연속함수) 잘 정의됩니다.
+
+joint PDF는 다음 성질들을 만족시킵니다.
+
+$$
+\begin{align*}
+(1)~
+&f_{XY}(x,y)\ge0\\
+(2)~
+&\iint_{\mathbb R^2}f_{XY}(x,y)\,dx\,dy=1
+=\lim_{\substack{x\to\infty\\y\to\infty}}F_{XY}(x,y)\\
+(3)~
+&\int_{y_1}^{y_2}\int_{x_1}^{x_2}f_{XY}(x,y)\,dx\,dy=P\left(x_1\lt X\le x_2,~~y_1\lt Y\le y_2\right)\\
+&=F_{XY}(x_2,y_2)-F_{XY}(x_1,y_2)-F_{XY}(x_2,y_1)+F_{XY}(x_1,y_1)\\
+(4)~
+&f_X(x)=\int_{-\infty}^\infty f_{XY}(x,y)\,dy\qquad(\text{marginalization})\\
+&f_Y(y)=\int_{-\infty}^\infty f_{XY}(x,y)\,dx\\
+(5)~
+&f_{XY}(x,y)=f_X(x)f_Y(y)\qquad(X,Y:\text{independent})
+\end{align*}
+$$
+
+이때, $\iint_{\mathbb R^2}=\int_{-\infty}^\infty\int_{-\infty}^\infty$ 입니다.
+이번에도 (1)-(4)는 당연합니다.
+그리고 (5)는 두 확률변수가 독립인 것의 정의입니다.
+
+#### 예시
+
+두 확률변수에 대하여 joint PDF가
+
+$$
+f_{XY}(x,y)=2e^{-x-y}\qquad(0\le x\le y,\quad 0\le y)
+$$
+
+로 주어지는 경우에 대하여 앞서 강의에서의 성질들이 성립하는지 살펴보겠습니다.
+이 함수가 정의된 영역을 $D$로 두면
+
+$$D=\{(x,y)\in\mathbb R^2:0\le x\le y, 0\le y\}$$
+
+이고 이것은 일사분면에서 $y\ge x$인 영역을 말합니다.
+먼저 (2)번 성질($\iint_{\mathbb R^2} f_{XY}(x,y)\,dx\,dy=1$)을 보겠습니다.
+이중적분의 순서에 따라 다음의 두 가지 방법으로 계산될 수 있습니다.
+
+$$
+\begin{align*}
+\iint_{\mathbb R^2}f_{XY}(x,y)\,dx\,dy
+&=\iint_D f_{XY}(x,y)\,dx\,dy\\
+&\stackrel{(a)}=\int_0^\infty\int_0^yf_{XY}(x,y)\,dx\,dy\\
+&=\int_0^\infty\int_0^y2e^{-x-y}\,dx\,dy\\
+&=\int_0^\infty\left[-2e^{-x-y}\right]_{x=0}^{x=y}\,dy\\
+&=\int_0^\infty2e^{-y}-2e^{-2y}\,dy\\
+&=\left[e^{-2y}-2e^{-y}\right]_0^\infty\\
+&=0-(1-2)\\
+&=1\\
+\iint_{\mathbb R^2}f_{XY}(x,y)\,dx\,dy
+&=\iint_D f_{XY}(x,y)\,dx\,dy\\
+&\stackrel{(b)}=\int_0^\infty\int_x^\infty f_{XY}(x,y)\,dy\,dx\\
+&=\int_0^\infty\int_x^\infty2e^{-x-y}\,dy\,dx\\
+&=\int_0^\infty\left[-2e^{-x-y}\right]_{y=x}^{y=\infty}\,dx\\
+&=\int_0^\infty2e^{-2x}\,dx\\
+&=\left[-e^{-2x}\right]_0^\infty\\
+&=1
+\end{align*}
+$$
+
+이때,
+
+$$
+\begin{align*}
+f_X(x)
+&=\int_x^\infty f_{XY}(x,y)\,dy\\
+f_Y(x)
+&=\int_0^y f_{XY}(x,y)\,dx\\
+\end{align*}
+$$
+
+이므로, marginal PDF인 $f_X(x)$와 $f_Y(y)$는 (b)와 (a)의 계산 과정에서 구해진 셈입니다(4).
+다시 말해,
+
+$$
+\begin{align*}
+f_X(x)
+&=2e^{-y}-2e^{-2y}\\
+f_Y(x)
+&=2e^{-2x}\\
+\end{align*}
+$$
+
+입니다.
+따라서
+
+$$
+f_{X,Y}(x,y)\ne f_X(x)f_Y(y)
+$$
+
+이고, $X$와 $Y$는 독립이 아닙니다(5).
+
+#### 예시
+
+다음으로
+
+$$
+f_{XY}(x,y)=\frac1{\pi r^2}\qquad(x^2+y^2\le1)
+$$
+
+와 같이 joint PDF가 주어지는 경우입니다.
+다시 말해, 단위원 내부에서 분포가 uniform distribution으로 주어지는 경우입니다.
+이 함수가 정의된 영역은
+
+$$D=\{(x,y)\in\mathbb R^2:x^2+y^2\le1\}$$
+
+이고 이것은
+
+![]({{site.url}}\images\2023-03-26-kocw_stats\stats_11-2.png){: .img-50-center}
+
+와 같은 영역을 의미합니다.
+이번에는 (2)번 성질이 당연합니다;
+
+$$
+\begin{align*}
+\iint_{\mathbb R^2}f_{XY}(x,y)\,dx\,dy
+&=\iint_D f_{XY}(x,y)\,dx\,dy\\
+&=\iint_D\frac1{\pi r^2}\,dx\,dy\\
+&=\frac1{\pi r^2}\iint_D\,dx\,dy\\
+&=\frac1{\pi r^2}\times\pi r^2\\
+&=1
+\end{align*}
+$$
+
+이 계산은, 아까처럼 $dx\,dy$ 혹은 $dy\,dx$로 해도 잘 풀립니다.
+또한 $r\,dr\,d\theta$로 풀어도 잘 계산됩니다.
+marginal PDF를 계산해보면
+
+$$
+\begin{align*}
+f_X(x)
+&=\int_{-\sqrt{r^2-x^2}}^{\sqrt{r^2-x^2}}f_{XY}(x,y)\,dy\\
+&=\int_{-\sqrt{r^2-x^2}}^{\sqrt{r^2-x^2}}\frac1{\pi r^2}\,dy\\
+&=\frac{2\sqrt{r^2-x^2}}{\pi r^2}
+\end{align*}
+$$
+
+이고, 마찬가지로
+
+$$
+f_Y(y)=\frac{2\sqrt{r^2-y^2}}{\pi r^2}
+$$
+
+입니다(4).
+따라서
+
+$$
+f_{X,Y}(x,y)\ne f_X(x)f_Y(y)
+$$
+
+이고, 이번에도 $X$와 $Y$는 독립이 아닙니다(5).
+
+## 5.2. 조건부 확률분포 (codntional probability distribution)
+
+### 5.2.1. 이산확률변수의 조건부 확률분포
+
+이전 내용들에서
+
+$$
+\begin{align*}
+P(A|B)
+&=\frac{P(A\cap B)}{P(B)}
+&&\text{(conditional probability w.r.t. events(01))}\\
+P(X\le x|X\le a)
+&=\frac{P\left((X\le x)\cap(X\le a)\right)}{P(X\le a)}
+&&\text{(conditional probability w.r.t. RVs(06))}
+\end{align*}
+$$
+
+와 같은 것들을 공부했습니다.
+
+두 이산확률변수 $X$와 $Y$에 대하여 조건부 확률질량함수(conditional PMF)에 해당하는 함수 $P_{Y\vert X}$를
+
+$$
+\begin{align*}
+P_{Y|X}(y|x)
+&=P(Y=y|X=x)\\
+&=\frac{P_{XY}(x,y)}{P_X(x)}
+\end{align*}
+$$
+
+와 같이 정의합니다.
+
+#### 예시
+
+예를 들어, 동전 세 개를 던질 때 두 확률변수 $X$, $Y$를 다음과 같이 정하겠습니다.
+먼저, 첫번째 동전이 앞면이 나오면 $X=1$, 뒷면이 나오면 $X=0$으로 정합니다.
+또한, 세 동전 중 앞면이 나온 동전의 개수를 $Y$라고 합니다.
+그러면 확률변수 $X$는
+
+$$
+\begin{align*}
+P_X(0)&=\frac12\\
+P_X(1)&=\frac12
+\end{align*}
+$$
+
+와 같은 확률질량함수를 가집니다.
+또한, $Y$는
+
+$$
+\begin{align*}
+P_Y(0)&=\frac18\\
+P_Y(1)&=\frac38\\
+P_Y(2)&=\frac38\\
+P_Y(3)&=\frac18\\
+\end{align*}
+$$
+
+와 같은 확률질량함수를 가집니다.
+$X$, $Y$에 대한 연합확률질량함수는
+
+$$
+\begin{align*}
+P_{XY}(0,0)&=\frac18&P_{XY}(0,1)&=\frac28&P_{XY}(0,2)&=\frac18&P_{XY}(0,3)&=0\\
+P_{XY}(1,0)&=0&P_{XY}(1,1)&=\frac18&P_{XY}(1,2)&=\frac28&P_{XY}(1,3)&=\frac18
+\end{align*}
+$$
+
+이 됩니다.
+그러면
+
+$$
+P_{Y|X}(1|0)=\frac{P_{XY}(0,1)}{P_X(0)}=\frac{\frac28}{\frac18+\frac28+\frac18}=\frac12
+$$
+
+입니다.
+
+### 5.2.2. 연속확률변수의 조건부 확률분포
+
+이번에는 $X$, $Y$가 연속확률변수인 경우를 살펴봅니다.
+이전과 마찬가지로 CDF에서부터 출발합니다.
+이때, conditional CDF는
+
+$$
+F_{Y|X}(y|x)=P(Y\le y|X=x)
+$$
+
+의 의미입니다.
+($X$가 $x$로 주어져 있을 때, $Y$의 CDF입니다.)
+그런데
+
+$$
+F_{Y|X}(y|x)=\frac{P(X=x,Y\le y)}{P(X=x)}
+$$
+
+와 같이 정의할 수는 없습니다.
+왜냐하면 분모가 0이 될 가능성이 있기 때문입니다.
+그러니까, 지금까지 CDF, (일반적인) conditional CDF, joint CDF가 별 문제 없이 정의되었던 것과는 조금 다릅니다.
+위와 같은 정의 대신에, $y$를 포함하는 infinitesimal한 구간 $x\lt X\le x+\Delta x$를 고려하여
+
+$$
+F_{Y|X}(y|x)\approx\frac{P(x\lt X\le x+\Delta x,Y\le y)}{P(x\lt X\le x+\Delta x)}
+$$
+
+와 같이 생각할 수 있습니다.
+그리고 우변에 $\Delta x\to0+$인 극한을 취해주어, 그 극한값을 $F_{Y|X}(y|x)$로 정해주는 것이 합리적입니다.
+그러면
+
+$$
+\begin{align*}
+F_{Y|X}(y|x)
+&=\lim_{\Delta x\to0+}\frac{P(x\lt X\le x+\Delta x,Y\le y)}{P(x\lt X\le x+\Delta x)}\\
+&=\lim_{\Delta x\to0+}\frac{P(x+\Delta x,Y\le y)-P(x,Y\le y)}{P(X\le x+\Delta x)-P(X\le x)}\\
+&=\lim_{\Delta x\to0+}\frac{F_{XY}(x+\Delta x,y)-F_{XY}(x,y)}{F_X(x+\Delta x)-F_X(x)}\\
+&=\frac{\displaystyle\lim_{\Delta x\to0+}\frac{F_{XY}(x+\Delta x,y)-F_{XY}(x,y)}{\Delta x}}{\displaystyle\lim_{\Delta x\to0+}\frac{F_X(x+\Delta x)-F_X(x)}{\Delta x}}\\
+&=\frac{\frac\partial{\partial x}F_{XY}(x,y)}{\frac\partial{\partial x}F_{X}(x)}\\
+&=\frac{\frac\partial{\partial x}F_{XY}(x,y)}{f_{X}(x)}
+\end{align*}
+$$
+
+입니다.
+이제, conditional PDF를 정의할 수 있습니다.
+이것은 conditional PDF를 $y$에 대해 편미분함으로써 얻어집니다;
+
+$$
+\begin{align*}
+f_{Y|X}(y|x)
+&=\frac\partial{\partial y}F_{Y|X}(y|x)\\
+&=\frac\partial{\partial y}\left(\frac{\frac\partial{\partial x}F_{XY}(x,y)}{f_{X}(x)}\right)\\
+&=\frac1{f_{X}(x)}\frac\partial{\partial y}\left(\frac\partial{\partial x}F_{XY}(x,y)\right)\\
+&=\frac{\frac{\partial^2}{\partial y\partial x}F_{XY}(x,y)}{f_{X}(x)}\\
+&=\frac{f_{XY}(x,y)}{f_X(x)}
+\end{align*}
+$$
+
+마찬가지로 $X$와 $Y$의 위치를 바꾸면
+
+$$f_{X|Y}(x|y)=\frac{f_{XY}(x,y)}{f_Y(y)}$$
+
+입니다.
+
+### 5.2.3. 조건부 기댓값과 조건부 분산 (conditional expectations and variances)
+
+이번에 다루는 것은, 드디어 $E[Y|X]$ 입니다.
+개인적으로는 이것의 정확한 의미를 파악하지 못해 고생한 적이 있습니다.
+
+먼저, $E[Y|X]$는 아직 정의한 적이 없는 개념이라는 것을 주지할 필요가 있습니다.
+$X$라는 조건 하에 $Y$의 평균을 구한다는 건 아직 정의한 적이 없습니다.
+
+대신, $E[Y|X=x]$라고 하면 의미가 생깁니다.
+이것은 $X=x$인 조건 하에서의 $Y$의 기댓값을 의미하며, 하나의 deterministic한 값입니다.
+또한, $E[Y|X=x]$는 $Y$의 기댓값이기 때문에 $Y$라든지 $y$라든지 하는 값에 의존하지 않습니다.
+이것은 오로지 $x$에 의존하는 값입니다.
+다시 말해, $x$에 대한 함수입니다;
+
+$$E[Y|X=x]=g(x)$$
+
+이제 $E[Y\vert X]$를
+
+$$E[Y|X]=g(X)$$
+
+로 정의하면 이 값은 하나의 확률변수로 생각할 수 있습니다.
+예를 들어, $X$가 확률변수이면 $X$에 대한 함수 $X^2$도 확률변수인 것처럼, $X$가 확률변수이기 때문에 $g(X)$도 확률변수인 것입니다.
+
+이제 $E[Y|X=x]$의 정의를 적어보겠습니다.
+아래 식에서 첫번째 등호가 정의이고, 두번째 등호는 conditional PMF의 성질을 사용한 것입니다.
+
+$$
+\begin{align*}
+E[Y|x=x]
+&=\int_\mathbb Ryf_{Y|X}(x,y)\,dy\\
+&=\int_\mathbb Ry\frac{f_{XY}(x,y)}{f_X(x)}\,dy
+\end{align*}
+$$
+
+둘째 줄의 적분을 계산할 때 $y$가 사라지므로, 적분값을 $x$에 대한 함수로서 놓을 수 있습니다.
+따라서, 아까 언급한 것처럼 $E[Y\vert X=x]$는 $x$에 대한 함수입니다.
+
+#### 예시
+
+![]({{site.url}}\images\2023-03-26-kocw_stats\stats_12-1.jpg){: .img-30-center}
+
+좌표평면 위에 $(0,0)$, $(2,0)$, $(1,1)$을 꼭짓점으로 하는 삼각형의 내부에 점 $P$가 위치한다고 할 때, $P$의 $x$좌표와 $y$좌표를 각각 $X$, $Y$라고 하겠습니다.
+$P$가 삼각형 내부에 균일한 정도의 가능성으로 존재할 때 (uniform distribution) $X$, $Y$의 joint PDF는
+
+$$f_{XY}(x,y)=1\qquad(0\le y\le x, y\le 2-x)$$
+
+입니다.
+이때, $E[X|Y=y]$와 $E[Y|X=x]$를 계산해보려 합니다.
+계산을 하기 전에 직관적으로 살펴보면, $y$의 값이 어떤 값이건 상관없이 $(0\lt y\lt 1)$ $X$가 위치하는 구간은 $1$을 중심으로 하는 구간입니다.
+또한, $X$가 여전히 uniform distribution을 따를 것이므로, [$X$의 평균은 1일 수밖에 없습니다.](https://math.stackexchange.com/q/4669361)
+따라서 $E[X|Y=y]=1$입니다.
+반대로 $x$ 값이 고정되어 있다고 생각하겠습니다.
+이번에는 $x$가 $0\le x\le1$인 경우와 $1\le x\le2$인 경우의 상황이 다릅니다.
+$0\le x\le1$이면, $Y$는 $0$부터 $x$ 사이를 움직이고, 따라서 그 평균은 $\frac12x$가 될 것입니다.
+$1\le x\le2$이면, $Y$는 $0$부터 $2-x$ 사이를 움직이고, 따라서 그 평균은 $\frac12(2-x)$가 될 것입니다.
+
+계산해보면
+
+$$
+\begin{align*}
+E[X|Y=y]
+&=\int_y^{2-y}xf_{X|Y}(x,y)\,dx\\
+&=\int_y^{2-y}x\frac{f_{XY}(x,y)}{f_Y(y)}\,dx\\
+&=\int_y^{2-y}x\frac{f_{XY}(x,y)}{\int_y^{2-y}f_{XY}(x,y)\,dx}\,dx\\
+&=\int_y^{2-y}x\frac1{\int_y^{2-y}\,dx}\,dx\\
+&=\int_y^{2-y}x\frac1{2-2y}\,dx\\
+&=\frac1{2-2y}\int_y^{2-y}x\,dx\\
+&=\frac1{2-2y}\times\frac12\left((2-y)^2-y^2\right)\\
+&=1
+\end{align*}
+$$
+
+이고
+
+$0\le x\le 1$일 때의 $E[Y\vert X=x]$는
+
+$$
+\begin{align*}
+E[Y|X=x]
+&=\int_0^xyf_{Y|X}(x,y)\,dy\\
+&=\int_0^xy\frac{f_{XY}(x,y)}{f_X(x)}\,dy\\
+&=\int_0^xy\frac{f_{XY}(x,y)}{\int_0^xf_{XY}(x,y)\,dy}\,dy\\
+&=\int_0^xy\frac1{\int_0^x\,dy}\,dy\\
+&=\int_0^xy\frac1x\,dy\\
+&=\frac1x\int_0^xy\,dy\\
+&=\frac12x
+\end{align*}
+$$
+
+이고, $1\le x\le 2$일 때의 $E[Y\vert X=x]$는
+
+$$
+\begin{align*}
+E[Y|X=x]
+&=\int_0^{2-x}yf_{Y|X}(x,y)\,dy\\
+&=\int_0^{2-x}y\frac{f_{XY}(x,y)}{f_X(x)}\,dy\\
+&=\int_0^{2-x}y\frac{f_{XY}(x,y)}{\int_0^{2-x}f_{XY}(x,y)\,dy}\,dy\\
+&=\int_0^{2-x}y\frac1{\int_0^{2-x}\,dy}\,dy\\
+&=\int_0^{2-x}y\frac1{2-x}\,dy\\
+&=\frac1{2-x}\int_0^{2-x}y\,dy\\
+&=\frac12(2-x)
+\end{align*}
+$$
+
+입니다.
+
+#### 예시
+
+두 연속확률변수 $X$, $Y$에 대한 PDF가 다음과 같이 주어졌다고 가정하겠습니다.
+
+$$f_{XY}(x,y)=\frac1ye^{-\frac xy}e^{-y}\qquad(x\gt0, y\gt0)$$
+
+정말로 PDF가 맞는지 (예의상) 계산해보면
+
+$$
+\begin{align*}
+\int_0^\infty\int_0^\infty f_{XY}(x,y)\,dx\,dy
+&=\int_0^\infty\frac{e^{-y}}y\int_0^\infty e^{-\frac xy}\,dx\,dy\\
+&=\int_0^\infty\frac{e^{-y}}y\left[-ye^{-\frac xy}\right]_{x=0}^{x=\infty}\,dy\\
+&=\int_0^\infty e^{-y}\,dy\\
+&=1
+\end{align*}
+$$
+
+입니다.
+conditional expectation $E[X|Y=y]$을 계산하기 전에, 그 과정에 쓰이는 $f_Y(y)$를 먼저 계산해보면
+
+$$
+\begin{align*}
+f_Y(y)
+&=\int_0^\infty f_{XY}(x,y)\,dx\\
+&=\int_0^\infty\frac1ye^{-\frac xy}e^{-y}\,dx\\
+&=\frac{e^{-y}}y\left[-ye^{-\frac xy}\right]_{x=0}^{x=\infty}\\
+&=e^{-y}
+\end{align*}
+$$
+
+입니다.
+이제 계산을 해보면
+
+$$
+\begin{align*}
+E[X|Y=y]
+&=\int_0^\infty xf_{X|Y}(x,y)\,dx\\
+&=\int_0^\infty x\frac{f_{XY}(x,y)}{f_Y(y)}\,dx\\
+&=\int_0^\infty x\times\frac{\frac1ye^{-\frac xy}e^{-y}}{e^{-y}}\,dx\\
+&=\int_0^\infty\left(\frac xy\right)e^{-\frac xy}\,dx\\
+&=y\int_0^\infty\left(\frac xy\right)e^{-\frac xy}\,d\left(\frac xy\right)\\
+&=y\left[te^{-t}-e^{-t}\right]_{t=0}^{t=\infty}\\
+&=y
+\end{align*}
+$$
+
+입니다.
+중간 계산과정에서 $\int te^{-t}\,dt=-te^{-t}-e^{-t}+C$를 활용했습니다.
+
+### 5.2.4. LOTUS (law of the unconscious statistician)
+
+이번에는, 확률변수 $X$에 대하여 $g(X)$의 확률을 구하는 식을 소개해봅니다.
+이것은 $\langle05\rangle$에서 LOTUS(law of the unconscious statistician)라는 이름으로도 불립니다.
+
+$$
+\begin{align*}
+E[g(X)]&=\sum_ig(x_i)P_X(x_i)                   &&(\text{discrete})\\
+E[g(X)]&=\int_{-\infty}^\infty g(x)f_X(x)\,dx   &&(\text{continuous})
+\end{align*}\tag{LOTUS}
+$$
+
+이에 대한 증명은 뒤에 나올 개념들이 필요하여 생략합니다.
+마찬가지로, 다변수 함수 $g(X,Y)$에 대해서도
+
+$$
+\begin{aligned}
+E\left[g(X,Y)\right]&=\int_{\mathbb R^2} g(x,y)f_{XY}(x,y)\,dx
+&&\text{(continuous)}\\
+E\left[g(X,Y)\right]&=\sum_{i=1}^m\sum_{j=1}^ng(x_i,y_j)P_X(x_i,y_j)
+&&\text{(discrete)}\\
+\end{aligned}\tag{$\ast$}
+$$
+
+입니다.
+또한,
+두 확률변수 $X$, $Y$에 대하여, 두 함수 $g_1(X,Y)$, $g_2(X,Y)$가 존재할 때, 두 실수 $\alpha$, $\beta$에 대하여
+
+$$
+E\left[\alpha g_1(X,Y)+\beta g_2(X,Y)\right]
+=\alpha E\left[g_1(X,Y)\right]+\beta E\left[g_2(X,Y)\right]
+\tag{$\ast\ast$}
+$$
+
+입니다.
+즉, $E$는 다변수 함수에 대해서도 linear operator입니다.
+왜냐하면
+
+$$
+\begin{align*}
+E\left[g_1(X,Y)+g_2(X,Y)\right]
+&=\iint_{\mathbb R^2}\left(g_1(X,Y)+g_2(X,Y)\right)f_{XY}(x,y)\,dx\,dy\\
+&=\iint_{\mathbb R^2}\left(g_1(X,Y)\right)f_{XY}(x,y)\,dx\,dy
++\iint_{\mathbb R^2}\left(g_2(X,Y)\right)f_{XY}(x,y)\,dx\,dy\\
+&=E\left[g_1(X,Y)\right]+E\left[g_2(X,Y)\right]
+\end{align*}
+$$
+
+이고,
+
+$$
+\begin{align*}
+E\left[\alpha g(X,Y)\right]
+&=\iint_{\mathbb R^2}\alpha g(X,Y)f_{XY}(x,y)\,dx\,dy\\
+&=\alpha\iint_{\mathbb R^2}g(X,Y)f_{XY}(x,y)\,dx\,dy\\
+&=\alpha E\left[g(X,Y)\right]
+\end{align*}
+$$
+
+이기 때문입니다.
+
+#### 예시
+
+조건부 확률에 관해서는 다음과 같은 성질이 있습니다.
+
+$$E\left[E[X\vert Y]\right]=E[X]$$
+
+이 성질을 이해하려면, 초반에 언급한 '$E[X\vert Y]$는 확률변수이다.'라는 말을 확실히 알아야 합니다.
+좌변에서 $E[X\vert Y]$에 대해 기댓값 연산을 취하고 있는데, 그럴 수 있는 것이 $E[X\vert Y]$가 그 자체로 확률변수이기 때문입니다.
+앞서 언급한대로 $E[X\vert Y=y]$는 $y$의 함수입니다.
+$E[X\vert Y=y]$를
+
+$$E[X|Y=y]=\int_{\mathbb R}xf_{X|Y}(x|y)\,dx=g(y)$$
+
+로 쓰면 $E[X\vert Y]$를
+
+$$E[X|Y]=g(Y)$$
+
+와 같이 생각할 수 있다고 했습니다.
+그런 관점에서 보면 $E\left[E[X\vert Y]\right]$는 $g(Y)$에 대한 평균을 의미합니다.
+계산해보면
+
+$$
+\begin{align*}
+E\left[E[X|Y]\right]
+&=E\left[g(Y)\right]\\
+&=\int_{\mathbb R}g(y)f_Y(y)\,dy\\
+&=\int_{\mathbb R}E[X|Y=y]f_Y(y)\,dy\\
+&=\int_{\mathbb R}\left(\int_{\mathbb R}xf_{X|Y}(x|y)\,dx\right)f_Y(y)\,dy\\
+&=\iint_{\mathbb R^2}xf_{X|Y}(x|y)f_Y(y)\,dx\,dy\\
+&=\iint_{\mathbb R^2}xf_{XY}(x,y)\,dx\,dy\\
+&=\int_{\mathbb R}x\int_{\mathbb R}f_{XY}(x,y)\,dy\,dx\\
+&=\int_{\mathbb R}xf_X(x)\,dx\\
+&=E[X]
+\end{align*}
+$$
+
+입니다.
+
+이것에 대한 discrete 버전의 증명은
+
+$$
+\begin{align*}
+E\left[E[X|Y]\right]
+&=E\left[g(Y)\right]\\
+&=\sum_{j=1}^ng(y_j)P_Y(y_j)\\
+&=\sum_{j=1}^n\left(E[X|Y=y_i]\right)P_Y(y_j)\\
+&=\sum_{j=1}^n\left(\sum_{i=1}^mx_iP_{X|Y}(x_i|y_i)\right)P_Y(y_j)\\
+&=\sum_{j=1}^n\sum_{i=1}^mx_iP_{X|Y}(x_i|y_j)P_Y(y_j)\\
+&=\sum_{j=1}^n\sum_{i=1}^mx_iP_{XY}(x_i,y_j)\\
+&=\sum_{i=1}^mx_i\sum_{j=1}^nP_{XY}(x_i,y_j)\\
+&=\sum_{i=1}^mx_iP_X(x_i)\\
+&=E[X]
+\end{align*}
+$$
+
+입니다.
+여기에서 세번째 줄과 마지막 줄의 값을 같다고 두면
+
+$$E[X]=\sum_{j=1}^n\left(E[X|Y=y_i]\right)P_Y(y_i)$$
+
+인데, 이것은 law of total probability인
+
+$$P(A)=\sum_{j=1}^nP(A|A_i)P(A_i)$$
+
+와 구조가 거의 똑같다는 점도 관찰할 수 있습니다.
+
+## 5.3. 여러 개의 확률변수에 대한 연합확률분포(multivariate joint probability distribution)
+
+### 5.3.1. 여러 개의 확률변수에 대한 연합확률분포
+
+확률변수 $X_1$, $X_2$, $\cdots$, $X_n$에 대하여, 다음과 같은 확률함수(PMF, PDF)를 생각해볼 수 있습니다.
+
+$$
+\begin{align*}
+P_{X_1,\cdots,X_n}(x_1,\cdots,x_n)&(\text{discrete})\\
+f_{X_1,\cdots,X_n}(x_1,\cdots,x_n)&(\text{continuous})
+\end{align*}
+$$
+
+두 확률함수들은 다음과 같은 성질들을 만족합니다.
+
+$$
+\begin{align*}
+\sum_{x_1}\cdots\sum_{x_n}P_{X_1,\cdots,X_n}(x_1,\cdots,x_n)                                    &=1(\text{discrete})\\
+\int_{\mathbb R}\cdots\int_{\mathbb R}f_{X_1,\cdots,X_n}(x_1,\cdots,x_n)\,dx_1\,\cdots,\,dx_n &=1(\text{continuous})
+\end{align*}
+$$
+
+$$
+\begin{align*}
+P_{X_1,\cdots,X_n}(x_1,\cdots,x_n)&=P\left(X_1=x_1,\cdots,X_n=x_n\right)                        (\text{discrete})\\
+\int_{a_1}^{b_1}\cdots\int_{a_n}^{b_n}f_{X_1,\cdots,X_n}(x_1,\cdots,x_n)\,dx_1\,\cdots,\,dx_n&=
+P\left(a_1\lt X_1\le b_1,\cdots,a_n\lt X_n\le b_n\right)                                        (\text{continuous})
+\end{align*}
+$$
+
+조건부 확률함수(conditional PMF, conditional PDF)에 관해서는
+
+$$
+\begin{align*}
+P_{X_n\vert X_{n-1},X_{n-2},\cdots,X_1}\left(x_n\vert x_{n-1},x_{n-2},\cdots,x_1\right)
+&=\frac{P_{X_n,X_{n-1},X_{n-2},\cdots,X_1}\left(x_n,x_{n-1},x_{n-2},\cdots,x_1\right)}{P_{X_{n-1},X_{n-2},\cdots,X_1}\left(x_{n-1},x_{n-2},\cdots,x_1\right)}
+&&(\text{discrete})\\
+f_{X_n\vert X_{n-1},X_{n-2},\cdots,X_1}\left(x_n\vert x_{n-1},x_{n-2},\cdots,x_1\right)
+&=\frac{f_{X_n,X_{n-1},X_{n-2},\cdots,X_1}\left(x_n,x_{n-1},x_{n-2},\cdots,x_1\right)}{f_{X_{n-1},X_{n-2},\cdots,X_1}\left(x_{n-1},x_{n-2},\cdots,x_1\right)}
+&&(\text{continuous})\\
+&=\frac{\partial^n}{\partial x_1\cdots\partial x_n}F_{X_n,\cdots,X_1}\left(x_n,\cdots,x_1\right)
+\end{align*}
+$$
+
+와 같은 식을 만족시킵니다.
+위 식의 continuous case에 대한 등식에서 처음 두 값이 같다는 것만 강의의 칠판에 적혀있습니다.
+
+강의에서는 이러한 여러 개의 확률변수가 통신공학이나 역학에서 어떻게 활용되는지가 더 설명됩니다.
+위와 같이 확률변수 여러 개의 확률변수들 (혹은 그것들의 집합)을 확률과정(stochastic process)이라고 합니다.
+즉, $X_t$들의 집합
+
+$$\{X_t\}_{t\in T}$$
+
+이 확률과정입니다.
+위에서는 $t$가 $1$, $2$, $\cdots$, $n$과 같은 값을 가졌습니다.
+즉 index set인 $T$가 $T=\\{1,2,\cdots,n\\}$인 것입니다.
+일반적으로 $T$는 실수집합 $\mathbb R$의 부분집합으로 봅니다.
+그러니까, 위의 예처럼 유한집합이 될 수도 있고 ; $T=\\{1,2,\cdots,n\\}$,
+countable 집합이 될 수도 있으며 ; $T=\\{1,2,\cdots\\}$,
+아니면 양의 실수의 집합이 될 수도 있습니다 ; $T=\\{t\in\mathbb R:t>0\\}$.
+
+만약 $t$를 시간으로 해석하고, $X_t$를 어떤 물체에 대한 물리적인 양으로 생각한다면, 확률과정은 이 물체와 관련된 어떤 현상을 해석하는 데 사용될 수 있습니다.
+강의에서는 미사일이 날아가는 과정을 확률과정을 통해 해석할 수 있다고 말합니다.
+그러니까, $X_t$를 시각 $t$에서의 미사일의 위치라고 한다면 (물론, 미사일은 3차원 공간 안에 위치하므로, 세 개의 확률과정을 생각하거나 세 종류의 확률변수를 생각해야 합니다.) $E[X_t]$를 통해 이 미사일이 이동할 예상 궤적을 생각해볼 수 있고, 각각의 시각 $t$에서 미사일이 특정한 영역 내에 위치할 확률을 계산할 수도 있습니다.
+
+이 미사일의 예에서 $X_t$들은 독립조건을 만족시키지 않습니다.
+만약 brownian motion의 경우라면, $X_t$들은 각각 독립적일 수도 있겠지만, 미사일의 예에서 $X_t$, 즉 시각 $t$에서의 위치는 이전의 시각에서의 위치인 $X_{t-1}$, $X_{t-2}$ 등에 영향을 받을 수밖에 없습니다.
+그런 의미에서
+
+$$f_{X_t|X_{t-1},X_{t-2}}(x_t\vert x_{t-1}, x_{t-2})$$
+
+와 같은 조건부확률을 생각할 수밖에 없다는 사실이 강의에서 설명됩니다.
+이러한 확률과정 중에서, 바로 이전 시각에 대한 영향만 고려하는 경우의 stochastic process(확률과정)을 markov process(마르코프 과정, markov chain)이라고 부릅니다.
+다시 말해, 위의 식에서 현재 시점에서의 상태 $X_t$는 바로 이전 시점과 그 이전의 시점과의 연관성만을 고려했습니다.
+그러니까, $X_t$는 $X_{t-3}$, $X_{t-4}$, $\cdots$ 등과는 독립적이라는 가정을 내포하고 있습니다.
+반면, markov process은
+
+$$f_{X_t|X_{t-1}}(x_t\vert x_{t-1})$$
+
+와 같이 모델링하는 것입니다.
+현재 시점에서의 상태 $X_t$가 바로 이전 시점의 상태 $X_{t-1}$에만 의존한다는 가정 하에 문제를 보는 것입니다.
+
+### 5.3.2. multinomial distribution
+
+이전에 이항분포(binomial distribution)이란, 여러 번의 독립적인 Bernoulli trial에 대하여 성공횟수의 분포를 말했습니다.
+즉, $n$번의 Bernoulli trial에 대하여, 각각의 Bernoulli trial의 성공확률이 $p$일 때, $n$번 중에서 성공한 횟수를 $X$라고 할 때, $X$는
+
+$$P_X(x)=\binom nxp^x(1-p)^{n-x},\quad(x=0,1,2,\cdots,n)$$
+
+를 PMF로 가진다고 했었습니다.
+이때, PMF의 식에 $\binom nx$와 같은 조합의 수가 나타났었습니다.
+한편, $\langle02\rangle$에서 조합의 수는 '같은 것이 포함된 순열'의 특수한 경우라고 했었습니다.
+
+만약, binomial distribution에서 Bernoulli trial (binary trial)이었던 것을 multinary trial로 바꾸면 multinomial distribution이라고 하는 개념을 생각해볼 수 있고, 그때 조합의 수 대신 '같은 것이 포함된 순열'이 나타납니다.
+
+다시 말해, 하나의 시행에서 나올 수 있는 outcome의 개수가 (2개가 아닌) 여러 개인 경우를 생각해볼 수 있습니다.
+대표적으로 trinomial distribution의 경우 (outcome의 개수가 3개인 경우)를 보겠습니다.
+결과가 $A$, $B$, $C$로 나타날 수 있는 어떤 시행(ternary trial)을 독립적으로 $n$번 시행할 때,
+각 시행에서 $A$가 나타날 확률을 $p_A$, $B$가 나타날 확률을 $p_B$라고 하면 $C$가 나타날 확률은 $1-p_A-p_B$입니다.
+$A$가 $N_A$번, $B$가 $N_B$번 나타난다고 할 때, $N_A$, $N_B$는 각각 이산확률변수이고, 그 joint PMF가
+
+$$P_{N_A,N_B}(n_A,n_B)=\frac{n!}{n_A!n_B!(n-n_A-n_B)!}{p_A}^{n_A}{p_B}^{n_B}(1-p_A-p_B)^{n-n_A-n_B}$$
+
+로 주어집니다.
+이때 $\frac{n!}{n_A!n_B!(n-n_A-n_B)!}$의 값은
+
+$$\binom n{n_A,n_B}=\frac{n!}{n_A!n_B!(n-n_A-n_B)!}$$
+
+와 같이 쓰기도 합니다.
+
+[일반적으로](https://en.wikipedia.org/wiki/Multinomial_distribution), $k$개의 서로다른 outcome $A_1$, $A_2$, $\cdots$, $A_k$이 나올 수 있는 시행에 대하여, 각각의 outcome $A_i$가 나타날 확률이 $p_i$로 주어지고, $n$번의 독립시행에서 $A_i$가 $N_i$번 나타난다고 할 때, $N_i$는 모두 이산확률변수입니다.
+그때, $N_1$, $\cdots$, $N_k$의 joint PMF는
+
+$$
+\begin{align*}
+P_{N_1,N_2,\cdots,N_k}(n_1,n_2,\cdots,n_k)
+&=\frac{n!}{n_1!n_2!\cdots n_k!}{p_1}^{n_1}{p_2}^{n_2}\cdots{p_k}^{n_k}\\
+&=\binom n{n_1,n_2,\cdots,n_k}\prod_{i=1}^n{p_i}^{n_i}
+\end{align*}
+$$
+
+로 주어집니다.
+
+#### 참고
+위의 식에서 
+$$\binom n{n_1,n_2,\cdots,n_k}=\frac{n!}{n_1!n_2!\cdots n_k!}$$
+와 같이 정의된 값을 multinomial coefficient라고 부릅니다.
+조합의 수 $\binom nr$을 binomial coefficient(이항계수)라고 불렀던 것의 연장선입니다.
+<br>
+비슷한 맥락에서 이항정리(binomial theorem)에 대응되는 <a href="https://en.wikipedia.org/wiki/Multinomial_distribution"> 다항정리(multinomial theorem) </a> 도 생각해볼 수 있습니다.
+이항정리가 두 개의 항의 합 $(a+b)^n$에 대한 거듭제곱의 전개식을 설명한다면 다항정리는 $n$개의 항의 합 $(x_1+x_2+\cdots+x_k)^n$에 대한 거듭제곱의 전개식을 설명합니다 ;
+$$(x_1+x_2+\cdots+x_k)^n=\sum_{n_1+\cdots+n_k=n}\binom n{n_1,\cdots,n_k}\prod_{i=1}^n{x_i}^{n_k}.$$
