@@ -17,9 +17,9 @@
 2. [확률변수 : 이산확률변수와 연속확률변수](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/2%EC%9E%A5-%E2%80%90-%EC%9D%B4%EC%82%B0%ED%99%95%EB%A5%A0%EB%B3%80%EC%88%98%EC%99%80-%EC%97%B0%EC%86%8D%ED%99%95%EB%A5%A0%EB%B3%80%EC%88%98) / by 강덕훈
 3. [이산확률분포](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/3%EC%9E%A5-%E2%80%90-%EC%9D%B4%EC%82%B0%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC) / by 김예진
 4. [연속확률분포](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/4%EC%9E%A5-%E2%80%90-%EC%97%B0%EC%86%8D%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC) / by 박수진
-5. [다중변수 및 연합분포 & 연합확률밀도함수와 조건부확률밀도함수](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/5%EC%9E%A5-%E2%80%90-%EB%8B%A4%EC%A4%91%EB%B3%80%EC%88%98%EC%9D%98-%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC-%EB%B0%8F-%EC%A1%B0%EA%B1%B4%EB%B6%80-%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC) / by 김선중
+5. [다중변수의 확률분포](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/5%EC%9E%A5-%E2%80%90-%EB%8B%A4%EC%A4%91%EB%B3%80%EC%88%98%EC%9D%98-%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC-%EB%B0%8F-%EC%A1%B0%EA%B1%B4%EB%B6%80-%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC) / by 김선중
 6. [공분산 & 상관계수(상관관계)](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/6%EC%9E%A5-%E2%80%90-%EA%B3%B5%EB%B6%84%EC%82%B0%EA%B3%BC-%EC%83%81%EA%B4%80%EA%B3%84%EC%88%98) / by 강덕훈
-7. [컨볼루션(이산확률변수, 연속확률변수의 합)](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/7%EC%9E%A5-%E2%80%90-%EC%BB%A8%EB%B3%BC%EB%A3%A8%EC%85%98) / by 김선중
+7. [컨볼루션](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/7%EC%9E%A5-%E2%80%90-%EC%BB%A8%EB%B3%BC%EB%A3%A8%EC%85%98) / by 김선중
 8. [표본평균과 표본분산](https://github.com/hanishereandnow/Stats-Craft-LAB/wiki/8%EC%9E%A5-%E2%80%90-%ED%91%9C%EB%B3%B8-%ED%8F%89%EA%B7%A0%EA%B3%BC-%ED%91%9C%EB%B3%B8-%EB%B6%84%EC%82%B0) / by 박수진
 
 ## 코드 구현 정리 (Code)
